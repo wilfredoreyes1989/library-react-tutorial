@@ -7,14 +7,14 @@ import Book from "../components/ui/Book";
 
 const BookInfo = ({ books, addToCart, cart }) => {
   const { id } = useParams();
-  const book = books.find((book) => +book.id === +id);
+  const book = books.find(book => +book.id === +id);
 
   function addBookToCart(book) {
-    addToCart(book);
+    addToCart([...cart, {...book, quantity: 1}]);
   }
 
   function bookExistsOnCart() {
-    return cart.find(book => book.id === +id);
+    return cart.find((book) => book.id === +id)
   }
 
   return (
@@ -35,7 +35,9 @@ const BookInfo = ({ books, addToCart, cart }) => {
                 <img src={book.url} alt="" className="book__selected--img" />
               </figure>
               <div className="book__selected--description">
-                <h2 className="book__selected--title">{book.title}</h2>
+                <h2 className="book__selected--title">
+                  {book.title}
+                </h2>
                 <Rating rating={book.rating} />
                 <div className="book__selected--price">
                   <Price
@@ -59,7 +61,7 @@ const BookInfo = ({ books, addToCart, cart }) => {
                   </p>
                 </div>
                 {bookExistsOnCart() ? (
-                    <Link to={`/books/${book.id}`} className="book__link">
+                    <Link to={`/cart`} className="book__link">
                         <button className="btn">Checkout</button>
                     </Link> 
                 ) : (
